@@ -13,16 +13,16 @@ dataSources:
       abi: TicketBroker
     mapping:
       kind: ethereum/events
-      apiVersion: 0.0.4
+      apiVersion: 0.0.5
       language: wasm/assemblyscript
-      file: ./src/livepeer/mapping.ts
+      file: ./src/livepeer.ts
       abis:
         - name: TicketBroker
-          file: ./src/livepeer/abis/TicketBroker.json
+          file: ./abis/TicketBroker.json
         - name: UniswapExchange
-          file: ./node_modules/uniswap-v1/abi/uniswap_exchange.json
+          file: ./abis/uniswap_exchange.json
         - name: UniswapV2Pair
-          file: ./node_modules/@uniswap/v2-core/build/UniswapV2Pair.json
+          file: ./abis/UniswapV2Pair.json
       entities:
         - Day
         - Protocol
@@ -38,17 +38,41 @@ dataSources:
       startBlock: 11440000
     mapping:
       kind: ethereum/events
-      apiVersion: 0.0.4
+      apiVersion: 0.0.5
       language: wasm/assemblyscript
-      file: ./src/thegraph/mapping.ts
+      file: ./src/thegraph.ts
       entities:
         - Day
         - Protocol
       abis:
         - name: Staking
-          file: ./src/thegraph/abis/Staking.json
+          file: ./abis/Staking.json
         - name: UniswapV2Pair
-          file: ./node_modules/@uniswap/v2-core/build/UniswapV2Pair.json
+          file: ./abis/UniswapV2Pair.json
       eventHandlers:
         - event: AllocationCollected(indexed address,indexed bytes32,uint256,uint256,indexed address,address,uint256,uint256)
           handler: handleAllocationCollected
+  - kind: ethereum/contract
+    name: ens
+    network: mainnet
+    source:
+      address: '0x283Af0B28c62C092C9727F1Ee09c02CA627EB7F5'
+      abi: EthRegistrarController
+      startBlock: 9350000
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.5
+      language: wasm/assemblyscript
+      file: ./src/ens.ts
+      entities:
+        - Registration
+      abis:
+        - name: EthRegistrarController
+          file: ./abis/EthRegistrarController.json
+      eventHandlers:
+        - event: >-
+            NameRegistered(string,indexed bytes32,indexed
+            address,uint256,uint256)
+          handler: handleNameRegisteredByController
+        - event: 'NameRenewed(string,indexed bytes32,uint256,uint256)'
+          handler: handleNameRenewedByController

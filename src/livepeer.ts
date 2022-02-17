@@ -1,13 +1,14 @@
 import { Address, BigInt } from "@graphprotocol/graph-ts";
-import { convertToDecimal, ZERO_BD } from "../helpers";
-import { createOrLoadDay, createOrLoadProtocol } from "../helpers";
-import { WinningTicketRedeemed } from "../types/livepeer/TicketBroker";
-import { UniswapExchange } from "../types/livepeer/UniswapExchange";
-import { UniswapV2Pair } from "../types/livepeer/UniswapV2Pair";
+import { convertToDecimal, ZERO_BD } from "./helpers";
+import { createOrLoadDay, createOrLoadProtocol } from "./helpers";
+import { WinningTicketRedeemed } from "./types/livepeer/TicketBroker";
+import { UniswapExchange } from "./types/livepeer/UniswapExchange";
+import { UniswapV2Pair } from "./types/livepeer/UniswapV2Pair";
 
 export function winningTicketRedeemed(event: WinningTicketRedeemed): void {
-  let protocol = createOrLoadProtocol("livepeer");
-  let day = createOrLoadDay("livepeer", event.block.timestamp.toI32());
+    const name: string = "livepeer";
+  let protocol = createOrLoadProtocol(name);
+  let day = createOrLoadDay(name, event.block.timestamp.toI32());
   let fees = convertToDecimal(event.params.faceValue);
   let ethPrice = ZERO_BD;
 

@@ -2,11 +2,11 @@ import { Address, BigDecimal, BigInt } from "@graphprotocol/graph-ts";
 import { Day, Protocol } from "./types/schema";
 import { UniswapV2Pair } from "./types/thegraph/UniswapV2Pair";
 
-export let ZERO_BI = BigInt.fromI32(0);
-export let ONE_BI = BigInt.fromI32(1);
-export let ZERO_BD = BigDecimal.fromString("0");
-export let ONE_BD = BigDecimal.fromString("1");
-export let BI_18 = BigInt.fromI32(18);
+export const ZERO_BI = BigInt.fromI32(0);
+export const ONE_BI = BigInt.fromI32(1);
+export const ZERO_BD = BigDecimal.fromString("0");
+export const ONE_BD = BigDecimal.fromString("1");
+export const BI_18 = BigInt.fromI32(18);
 
 export function exponentToBigDecimal(decimals: BigInt): BigDecimal {
   let bd = BigDecimal.fromString("1");
@@ -60,4 +60,9 @@ export function getPairPrice(pairAddress: string, reserve0Decimals: BigInt, rese
   return convertTokenToDecimal(pairReserves.value0, reserve0Decimals).div(
     convertTokenToDecimal(pairReserves.value1, reserve1Decimals)
   );
+}
+
+export const USDC_ETH_PAIR_UNI_V2 =  "0xb4e16d0168e52d35cacd2c6185b44281ec28c9dc";
+export function getEthUsdPrice(): BigDecimal {
+    return getPairPrice(USDC_ETH_PAIR_UNI_V2, BigInt.fromI32(6), BigInt.fromI32(6));
 }

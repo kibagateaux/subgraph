@@ -4,8 +4,8 @@ import {
   getPairPrice,
   createOrLoadDay,
   createOrLoadProtocol,
-} from "../helpers";
-import { AllocationCollected } from "../types/thegraph/Staking";
+} from "./helpers";
+import { AllocationCollected } from "./types/thegraph/Staking";
 
 export function handleAllocationCollected(event: AllocationCollected): void {
   let protocol = createOrLoadProtocol("thegraph");
