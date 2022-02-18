@@ -1,22 +1,14 @@
-import { Address, BigInt } from "@graphprotocol/graph-ts";
 import {
     createOrLoadDay,
     createOrLoadProtocol,
-    getPairPrice,
     convertToDecimal,
-    ZERO_BD,
     getEthUsdPrice,
 } from "./helpers";
-// import { UniswapExchange } from "./types/ens/UniswapExchange";
-// import { UniswapV2Pair } from "./types/ens/UniswapV2Pair";
 
-import {
-    NameRegistered as ControllerNameRegisteredEvent,
-    NameRenewed as ControllerNameRenewedEvent
-  } from './types/ens/EthRegistrarController'
+import { NameRegistered, NameRenewed } from './types/ens/EthRegistrarController';
   
 
-export function handleNameRegisteredByController(event: ControllerNameRegisteredEvent): void {
+export function handleNameRegisteredByController(event: NameRegistered): void {
     let protocol = createOrLoadProtocol("ens");
     let day = createOrLoadDay("ens", event.block.timestamp.toI32());
     let pairPrice = getEthUsdPrice();
@@ -29,7 +21,7 @@ export function handleNameRegisteredByController(event: ControllerNameRegistered
     day.save();
   }
 
-  export function handleNameRenewedByController(event: ControllerNameRenewedEvent): void {
+  export function handleNameRenewedByController(event: NameRenewed): void {
     let protocol = createOrLoadProtocol("ens");
     let day = createOrLoadDay("ens", event.block.timestamp.toI32());
     let pairPrice = getEthUsdPrice();

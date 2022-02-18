@@ -6,7 +6,7 @@ import { UniswapExchange } from "./types/livepeer/UniswapExchange";
 import { UniswapV2Pair } from "./types/livepeer/UniswapV2Pair";
 
 export function winningTicketRedeemed(event: WinningTicketRedeemed): void {
-    const name: string = "livepeer";
+  const name: string = "livepeer";
   let protocol = createOrLoadProtocol(name);
   let day = createOrLoadDay(name, event.block.timestamp.toI32());
   let fees = convertToDecimal(event.params.faceValue);
