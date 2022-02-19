@@ -19,10 +19,10 @@ dataSources:
       abis:
         - name: TicketBroker
           file: ./abis/TicketBroker.json
-        - name: UniswapExchange
-          file: ./abis/uniswap_exchange.json
+        - name: UniswapV1Exchange
+          file: ./abis/UniswapV1Exchange.json
         - name: UniswapV2Pair
-          file: ./abis/IUniswapV2Pair.json
+          file: ./abis/UniswapV2Pair.json
       entities:
         - Day
         - Protocol
@@ -48,7 +48,7 @@ dataSources:
         - name: Staking
           file: ./abis/Staking.json
         - name: UniswapV2Pair
-          file: ./abis/IUniswapV2Pair.json
+          file: ./abis/UniswapV2Pair.json
       eventHandlers:
         - event: AllocationCollected(indexed address,indexed bytes32,uint256,uint256,indexed address,address,uint256,uint256)
           handler: handleAllocationCollected
@@ -70,7 +70,9 @@ dataSources:
         - name: EthRegistrarController
           file: ./abis/EthRegistrarController.json
         - name: UniswapV2Pair
-          file: ./abis/IUniswapV2Pair.json
+          file: ./abis/UniswapV2Pair.json
+        - name: UniswapV1Exchange
+          file: ./abis/UniswapV1Exchange.json
       eventHandlers:
         - event: >-
             NameRegistered(string,indexed bytes32,indexed

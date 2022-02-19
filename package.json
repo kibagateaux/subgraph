@@ -5,6 +5,10 @@
   "scripts": {
     "codegen": "graph codegen --debug --output-dir src/types/",
     "build": "graph build --debug",
+    "deploy": "graph deploy --studio web3",
+    "create-local": "graph create web3 --node $ETH_NODE_URL",
+    "dev": "cargo run -p graph-node --release -- --postgres-url $DATABASE_URL --ethereum-rpc $ETH_NODE_URL --ipfs $IPFS_URL", 
+    "postdev": "yarn create-local",
     "lint": "yarn eslint .",
     "lint-fix": "eslint . --fix",
     "prettier": "prettier '**/*.ts'",
