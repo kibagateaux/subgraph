@@ -1,13 +1,17 @@
 import { Address, BigDecimal, BigInt } from "@graphprotocol/graph-ts";
-import { Day, Protocol } from "./types/schema";
+import { Day, Protocol, Pool } from "./types/schema";
 import { UniswapV2Pair } from "./types/ens/UniswapV2Pair";
 import { UniswapV1Exchange } from "./types/ens/UniswapV1Exchange";
-
-export const ZERO_BI = BigInt.fromI32(0);
-export const ONE_BI = BigInt.fromI32(1);
-export const ZERO_BD = BigDecimal.fromString("0");
-export const ONE_BD = BigDecimal.fromString("1");
-export const BI_18 = BigInt.fromI32(18);
+import {
+    ZERO_BI,
+    ONE_BI,
+    ZERO_BD,
+    ONE_BD,
+    BI_18,
+    DAI_ETH_PAIR_UNI_V1,
+    USDC_ETH_PAIR_UNI_V2,
+    usdcEthUniv2DeployBlockNumber,
+} from './constants'
 
 export function exponentToBigDecimal(decimals: BigInt): BigDecimal {
   let bd = BigDecimal.fromString("1");
@@ -53,6 +57,19 @@ export function createOrLoadDay(protocolID: string, timestamp: i32): Day {
   return day as Day;
 }
 
+export function createOrLoadPool(poolId: string, protocolID: string): Day {
+    let protocol = createOrLoadProtocol(protocolID);
+    let pool = Pool.load(poolId);
+
+    if (protocol == null) {
+      pool = Pool.load(poolId);
+      protocol.revenueUSD = ZERO_BD;
+      protocol.save();
+    }
+
+  }
+
+
 export function getPairPrice(pairAddress: string, reserve0Decimals: BigInt, reserve1Decimals: BigInt): BigDecimal {
   let pair = UniswapV2Pair.bind(
     Address.fromString(pairAddress)
@@ -62,11 +79,6 @@ export function getPairPrice(pairAddress: string, reserve0Decimals: BigInt, rese
     convertTokenToDecimal(pairReserves.value1, reserve1Decimals)
   );
 }
-
-// dai had more liquidity/volume on v1 but USDC is better on v2 to present day
-export const DAI_ETH_PAIR_UNI_V1 = "0x2a1530C4C41db0B0b2bB646CB5Eb1A67b7158667"
-export const USDC_ETH_PAIR_UNI_V2 = "0xb4e16d0168e52d35cacd2c6185b44281ec28c9dc";
-const usdcEthUniv2DeployBlockNumber: BigInt = BigInt.fromI32(10584355)
 
 export function getEthUsdPrice(blockNumber: BigInt): BigDecimal {
     let price: BigDecimal = ZERO_BD;

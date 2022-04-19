@@ -1,14 +1,14 @@
 import {
     NameRegistered,
     NameRenewed
-} from './types/ens/EthRegistrarController';
+} from '../types/ens/EthRegistrarController';
 
 import {
     createOrLoadDay,
     createOrLoadProtocol,
     convertToDecimal,
     getEthUsdPrice,
-} from "./helpers";
+} from "../helpers";
 
 const protocolName: string = "ens";
 

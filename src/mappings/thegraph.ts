@@ -1,11 +1,11 @@
-import { AllocationCollected } from "./types/thegraph/Staking";
+import { AllocationCollected } from "../types/thegraph/Staking";
 import { BigInt } from "@graphprotocol/graph-ts";
 import {
   convertToDecimal,
   getPairPrice,
   createOrLoadDay,
   createOrLoadProtocol,
-} from "./helpers";
+} from "../helpers";
 const protocolName = "thegraph"
 
 export function handleAllocationCollected(event: AllocationCollected): void {

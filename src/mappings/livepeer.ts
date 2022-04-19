@@ -1,10 +1,10 @@
-import { WinningTicketRedeemed } from "./types/livepeer/TicketBroker";
+import { WinningTicketRedeemed } from "../types/livepeer/TicketBroker";
 import {
     convertToDecimal,
     getEthUsdPrice,
     createOrLoadDay,
     createOrLoadProtocol
-} from "./helpers";
+} from "../helpers";
 const protocolName: string = "livepeer";
 
 export function winningTicketRedeemed(event: WinningTicketRedeemed): void {

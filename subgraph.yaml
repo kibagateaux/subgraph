@@ -15,7 +15,7 @@ dataSources:
       kind: ethereum/events
       apiVersion: 0.0.5
       language: wasm/assemblyscript
-      file: ./src/livepeer.ts
+      file: ./src/mappings/livepeer.ts
       abis:
         - name: TicketBroker
           file: ./abis/TicketBroker.json
@@ -40,7 +40,7 @@ dataSources:
       kind: ethereum/events
       apiVersion: 0.0.5
       language: wasm/assemblyscript
-      file: ./src/thegraph.ts
+      file: ./src/mappings/thegraph.ts
       entities:
         - Day
         - Protocol
@@ -63,7 +63,7 @@ dataSources:
       kind: ethereum/events
       apiVersion: 0.0.5
       language: wasm/assemblyscript
-      file: ./src/ens.ts
+      file: ./src/mappings/ens.ts
       entities:
         - Registration
       abis:
@@ -80,3 +80,29 @@ dataSources:
           handler: handleNameRegisteredByController
         - event: 'NameRenewed(string,indexed bytes32,uint256,uint256)'
           handler: handleNameRenewedByController
+  # need to track Ocean datatoken factory contract and create datatoken entity
+  # need to track Ocean pool factory contract and update datatoken storage when a pool is created for it
+
+ 
+templates:
+  # For OCEAN datatokens so we can track events on each independent token contract
+  - kind: ethereum/contract
+    name: ocean 
+    network: mainnet
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.5
+      language: wasm/assemblyscript
+      file: ./src/mappings/ocean.ts
+      entities:
+        - ERC20Template
+      abis:
+        - name: UniswapV2Pair
+          file: ./abis/UniswapV2Pair.json
+        - name: OceanDataToken
+          file: ./node_modules/@oceanprotocol/contracts/artifacts/contracts/templates/ERC20Template.sol/ERC20Template.json
+      eventHandlers:
+        - event:    OrderStarted(indexed address,address,uint256,uint256,uint256,indexed address,uint256)
+          handler:  handleOrderStarted
+        - event:    OrderFinished(bytes32,indexed address,uint256,uint256,indexed address,uint256);
+          handler:  handleOrderFinished

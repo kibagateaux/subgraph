@@ -2,11 +2,11 @@
 Protocol global parameters
 """
 type Protocol @entity {
-  "Protocol id"
+  "Protocol's lowercase short name e.g. ens for Ethereum Name Service"
   id: ID!
-  "Total protocol revenue"
+  "Total protocol revenue since inception"
   revenueUSD: BigDecimal!
-  "Protocol day stats"
+  "Fees earned per day by the protocol"
   days: [Day!] @derivedFrom(field: "protocol")
 }
 
@@ -22,4 +22,45 @@ type Day @entity {
   protocol: Protocol!
   "Fees generated this day in USD"
   revenueUSD: BigDecimal!
+}
+
+type Token @entity {
+    id: ID!                                             # token address
+    tx: Bytes                                           # creation transaction id
+    pool: Pool                                          # AMM pool to calculate token price
+
+    symbol: String
+    name: String
+    decimals: Int!
+    address: String!
+    cap: BigDecimal!
+    supply: BigDecimal!
+    ethSpotPrice: Int
+
+    isDataToken: Bool!                                  # is this a token from ocean protocol
+    consumePrice: BigDecimal!                           #
+}
+
+type Pool @entity {
+    id: ID!                                             # Pool address
+    tx: Bytes                                           # Pool creation transaction id
+    cap: BigInt                                         # Maximum supply if any
+    name: String                                        # Pool token name
+    symbol: String                                      # Pool token symbol
+    protocol: Protocol                                  # Protocol that this pool belongs too
+    totalWeight: BigDecimal!
+
+    factoryID: String                                   # Factory contract that generated this pool
+    
+    baseAssetToken: Bytes!                              # Address of reserve token in pool
+    baseAssetWeight: BigDecimal!                        # 0-100%. Assumes all pools only have 2 assets.
+    baseAssetReserve: BigDecimal!                       # Amount of token held in pool. Used to calculate pricing  against ETH/USD
+
+    quoteAssetToken: Bytes!                             # Address of alt token
+    quoteAssetReserve: BigDecimal!                      # Amount of alt token held in pool
+
+    # relevent datapoints for web3 index stats
+    spotPrice: BigDecimal!                              # ratio of base/quote at current block
+    swapFees: [Day]!                                    # all pool swap fees earned
+    totalSwapVolume: BigDecimal!                        # Total swap volume in baseAsset
 }
